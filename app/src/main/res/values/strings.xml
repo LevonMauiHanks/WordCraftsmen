@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">WordCraftsmen</string>
+    <string name="home">Home</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="wordcraftsmen">WordCraftsmen</string>
+    <string name="app_logo">App Logo</string>
+    <string name="learned_words">Learned Words</string>
+    <string name="chanel1">chanel1</string>
+    <string name="chanel1_title">Don\'t forget to learn at least 5 new words today!</string>
+    <string name="chanel1_desc">Open the app and start learning new words now!</string>
+    <string name="notificationworkererror">NotificationWorkerError</string>
+    <string name="generate_new_words">Generate new words</string>
+</resources>
