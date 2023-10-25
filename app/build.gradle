@@ -166,4 +166,7 @@ dependencies {
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
 
+    //Search Bar
+    implementation "androidx.compose.material3:material3:1.1.2"
+
 }

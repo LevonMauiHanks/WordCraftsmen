@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
@@ -20,6 +21,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,11 +36,13 @@ fun WordItem(
     word: Word,
     modifier: Modifier = Modifier,
     checkbox: Boolean = false,
-    isChecked: (Word) -> Unit = {}
+    checkedState: MutableState<Boolean> = mutableStateOf(false),
+    newWordsGenerated: MutableState<Boolean> = mutableStateOf(false),
+    isChecked: (Word) -> Unit = {},
 ) {
-
-    val checkedState = remember { mutableStateOf(false) }
-
+    if(newWordsGenerated.value){
+        checkedState.value = false
+    }
     Card(
         modifier = modifier
             .border(2.dp, Color.White)

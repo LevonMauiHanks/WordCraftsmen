@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,14 +33,15 @@ import com.example.wordcraftsmen.ui.theme.components.WordItem
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
-
+    val newWordsGenerated = remember {
+        mutableStateOf(false)
+    }
     val generatedItems = remember {
         mutableStateOf<List<Word>?>(emptyList())
     }
@@ -65,7 +67,13 @@ fun HomeScreen(
 
             Button(
                 onClick = {
-                    generatedItems.value = generatedItems.value?.shuffled()?.take(5)
+                    coroutineScope.launch {
+                        generatedItems.value =
+                            viewModel.wordRepository.getAllWords()?.first()
+                                ?.filter { !it.isLearned }
+                                ?.shuffled()?.take(5)
+                    }
+                    newWordsGenerated.value = true
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -79,6 +87,7 @@ fun HomeScreen(
                     fontFamily = FontFamily.Cursive
                 )
             }
+
             generatedItems.value?.let { data ->
                 LazyColumn(
                     modifier = Modifier
@@ -87,7 +96,8 @@ fun HomeScreen(
                     userScrollEnabled = true
                 ) {
                     items(data) { word ->
-                        WordItem(word, Modifier, true) {
+                        val checkedState = remember { mutableStateOf(false) }
+                        WordItem(word, Modifier, true, checkedState, newWordsGenerated) {
                             coroutineScope.launch {
                                 it.copy(isLearned = true).let { word ->
                                     viewModel.wordRepository.addWord(word)

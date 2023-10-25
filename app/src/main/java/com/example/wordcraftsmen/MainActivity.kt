@@ -59,7 +59,6 @@ class MainActivity : ComponentActivity(), LifecycleOwner {
         }
     }
 
-    @SuppressLint("ObsoleteSdkInt")
     private fun setupRecurringWork() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
@@ -67,7 +66,7 @@ class MainActivity : ComponentActivity(), LifecycleOwner {
             .build()
 
         val repeatingRequestSyncWorker =
-            PeriodicWorkRequestBuilder<NotificationWorker>(10, TimeUnit.SECONDS)
+            PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.DAYS)
                 .setConstraints(constraints)
                 .addTag(NotificationWorker.WORK_NAME)
                 .setBackoffCriteria(
