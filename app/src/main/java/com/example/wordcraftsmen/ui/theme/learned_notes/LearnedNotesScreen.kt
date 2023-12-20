@@ -1,5 +1,6 @@
 package com.example.wordcraftsmen.ui.theme.learned_notes
 
+import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.wordcraftsmen.R
 import com.example.wordcraftsmen.data.Word
+import com.example.wordcraftsmen.textToSpeech
 import com.example.wordcraftsmen.ui.theme.components.AppBottomBar
 import com.example.wordcraftsmen.ui.theme.components.AppSearchBar
 import com.example.wordcraftsmen.ui.theme.components.WordItem
@@ -74,9 +76,17 @@ fun LearnedWordsScreen(
                     state = listState,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    itemsIndexed(learnedWords) { index, word ->
+                    itemsIndexed(learnedWords) { _, word ->
                         WordItem(
-                            word = word
+                            word = word,
+                            micClicked = {
+                                textToSpeech.speak(
+                                    it.name.trim(),
+                                    TextToSpeech.QUEUE_FLUSH,
+                                    null,
+                                    null
+                                )
+                            }
                         )
                     }
                 }

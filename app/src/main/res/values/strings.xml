@@ -10,4 +10,5 @@
     <string name="chanel1_desc">Open the app and start learning new words now!</string>
     <string name="notificationworkererror">NotificationWorkerError</string>
     <string name="generate_new_words">Generate new words</string>
+    <string name="microphone_icon">Microphone Icon</string>
 </resources>

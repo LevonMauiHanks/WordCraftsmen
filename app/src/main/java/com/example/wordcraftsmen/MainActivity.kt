@@ -17,7 +17,10 @@ import com.google.accompanist.permissions.rememberPermissionState
 import dagger.hilt.android.AndroidEntryPoint
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
+import android.speech.tts.TextToSpeech
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
@@ -27,11 +30,13 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.wordcraftsmen.data.NotificationWorker
+import java.util.Locale
 import java.util.concurrent.TimeUnit
+
+lateinit var textToSpeech: TextToSpeech
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(), LifecycleOwner {
-
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +52,7 @@ class MainActivity : ComponentActivity(), LifecycleOwner {
                     }
                 }
                 setupRecurringWork()
+                setupSpeech(applicationContext)
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -81,5 +87,13 @@ class MainActivity : ComponentActivity(), LifecycleOwner {
             ExistingPeriodicWorkPolicy.KEEP,
             repeatingRequestSyncWorker
         )
+    }
+
+    private fun setupSpeech(context: Context) {
+        textToSpeech = TextToSpeech(context) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech.language = Locale.ENGLISH
+            }
+        }
     }
 }
